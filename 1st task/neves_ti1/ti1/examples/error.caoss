@@ -1,0 +1,5 @@
+.data
+.code
+    mov (0), r1
+
+# ERROR: no syscall to terminate program

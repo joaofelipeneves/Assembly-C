@@ -1,0 +1,11 @@
+.data
+    .w 10
+.code
+    mov (0), r5
+    mov 22, r2
+    add .b r5, r2,r3
+    or r5, r2, r3
+
+# terminate program
+    mov 0, r1
+    int 0

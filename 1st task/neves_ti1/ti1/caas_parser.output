@@ -1,0 +1,414 @@
+Grammar
+
+    0 $accept: prog $end
+
+    1 $@1: %empty
+
+    2 prog: $@1 data_directive data code_directive instr_list
+
+    3 $@2: %empty
+
+    4 prog: $@2 code_directive instr_list
+
+    5 data: %empty
+
+    6 $@3: %empty
+
+    7 data: data_size number $@3 data
+
+    8 instr_list: %empty
+    9           | instr instr_list
+
+   10 instr: binary_alu_mnemonic optional_size cpu_register comma cpu_register comma cpu_register
+   11      | unary_alu_mnemonic optional_size cpu_register comma cpu_register
+   12      | ls_mnemonic cpu_register comma memory_address
+   13      | ls_mnemonic memory_address comma cpu_register
+   14      | ls_mnemonic number comma cpu_register
+   15      | int_mnemonic number
+
+   16 optional_size: %empty
+   17              | data_size
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+data_directive (258) 2
+code_directive (259) 2 4
+comma (260) 10 11 12 13 14
+int_mnemonic (261) 15
+number (262) 7 14 15
+memory_address (263) 12 13
+cpu_register (264) 10 11 12 13 14
+data_size (265) 7 17
+binary_alu_mnemonic (266) 10
+unary_alu_mnemonic (267) 11
+ls_mnemonic (268) 12 13 14
+
+
+Nonterminals, with rules where they appear
+
+$accept (14)
+    on left: 0
+prog (15)
+    on left: 2 4, on right: 0
+$@1 (16)
+    on left: 1, on right: 2
+$@2 (17)
+    on left: 3, on right: 4
+data (18)
+    on left: 5 7, on right: 2 7
+$@3 (19)
+    on left: 6, on right: 7
+instr_list (20)
+    on left: 8 9, on right: 2 4 9
+instr (21)
+    on left: 10 11 12 13 14 15, on right: 9
+optional_size (22)
+    on left: 16 17, on right: 10 11
+
+
+State 0
+
+    0 $accept: . prog $end
+
+    code_directive  reduce using rule 3 ($@2)
+    $default        reduce using rule 1 ($@1)
+
+    prog  go to state 1
+    $@1   go to state 2
+    $@2   go to state 3
+
+
+State 1
+
+    0 $accept: prog . $end
+
+    $end  shift, and go to state 4
+
+
+State 2
+
+    2 prog: $@1 . data_directive data code_directive instr_list
+
+    data_directive  shift, and go to state 5
+
+
+State 3
+
+    4 prog: $@2 . code_directive instr_list
+
+    code_directive  shift, and go to state 6
+
+
+State 4
+
+    0 $accept: prog $end .
+
+    $default  accept
+
+
+State 5
+
+    2 prog: $@1 data_directive . data code_directive instr_list
+
+    data_size  shift, and go to state 7
+
+    $default  reduce using rule 5 (data)
+
+    data  go to state 8
+
+
+State 6
+
+    4 prog: $@2 code_directive . instr_list
+
+    int_mnemonic         shift, and go to state 9
+    binary_alu_mnemonic  shift, and go to state 10
+    unary_alu_mnemonic   shift, and go to state 11
+    ls_mnemonic          shift, and go to state 12
+
+    $default  reduce using rule 8 (instr_list)
+
+    instr_list  go to state 13
+    instr       go to state 14
+
+
+State 7
+
+    7 data: data_size . number $@3 data
+
+    number  shift, and go to state 15
+
+
+State 8
+
+    2 prog: $@1 data_directive data . code_directive instr_list
+
+    code_directive  shift, and go to state 16
+
+
+State 9
+
+   15 instr: int_mnemonic . number
+
+    number  shift, and go to state 17
+
+
+State 10
+
+   10 instr: binary_alu_mnemonic . optional_size cpu_register comma cpu_register comma cpu_register
+
+    data_size  shift, and go to state 18
+
+    $default  reduce using rule 16 (optional_size)
+
+    optional_size  go to state 19
+
+
+State 11
+
+   11 instr: unary_alu_mnemonic . optional_size cpu_register comma cpu_register
+
+    data_size  shift, and go to state 18
+
+    $default  reduce using rule 16 (optional_size)
+
+    optional_size  go to state 20
+
+
+State 12
+
+   12 instr: ls_mnemonic . cpu_register comma memory_address
+   13      | ls_mnemonic . memory_address comma cpu_register
+   14      | ls_mnemonic . number comma cpu_register
+
+    number          shift, and go to state 21
+    memory_address  shift, and go to state 22
+    cpu_register    shift, and go to state 23
+
+
+State 13
+
+    4 prog: $@2 code_directive instr_list .
+
+    $default  reduce using rule 4 (prog)
+
+
+State 14
+
+    9 instr_list: instr . instr_list
+
+    int_mnemonic         shift, and go to state 9
+    binary_alu_mnemonic  shift, and go to state 10
+    unary_alu_mnemonic   shift, and go to state 11
+    ls_mnemonic          shift, and go to state 12
+
+    $default  reduce using rule 8 (instr_list)
+
+    instr_list  go to state 24
+    instr       go to state 14
+
+
+State 15
+
+    7 data: data_size number . $@3 data
+
+    $default  reduce using rule 6 ($@3)
+
+    $@3  go to state 25
+
+
+State 16
+
+    2 prog: $@1 data_directive data code_directive . instr_list
+
+    int_mnemonic         shift, and go to state 9
+    binary_alu_mnemonic  shift, and go to state 10
+    unary_alu_mnemonic   shift, and go to state 11
+    ls_mnemonic          shift, and go to state 12
+
+    $default  reduce using rule 8 (instr_list)
+
+    instr_list  go to state 26
+    instr       go to state 14
+
+
+State 17
+
+   15 instr: int_mnemonic number .
+
+    $default  reduce using rule 15 (instr)
+
+
+State 18
+
+   17 optional_size: data_size .
+
+    $default  reduce using rule 17 (optional_size)
+
+
+State 19
+
+   10 instr: binary_alu_mnemonic optional_size . cpu_register comma cpu_register comma cpu_register
+
+    cpu_register  shift, and go to state 27
+
+
+State 20
+
+   11 instr: unary_alu_mnemonic optional_size . cpu_register comma cpu_register
+
+    cpu_register  shift, and go to state 28
+
+
+State 21
+
+   14 instr: ls_mnemonic number . comma cpu_register
+
+    comma  shift, and go to state 29
+
+
+State 22
+
+   13 instr: ls_mnemonic memory_address . comma cpu_register
+
+    comma  shift, and go to state 30
+
+
+State 23
+
+   12 instr: ls_mnemonic cpu_register . comma memory_address
+
+    comma  shift, and go to state 31
+
+
+State 24
+
+    9 instr_list: instr instr_list .
+
+    $default  reduce using rule 9 (instr_list)
+
+
+State 25
+
+    7 data: data_size number $@3 . data
+
+    data_size  shift, and go to state 7
+
+    $default  reduce using rule 5 (data)
+
+    data  go to state 32
+
+
+State 26
+
+    2 prog: $@1 data_directive data code_directive instr_list .
+
+    $default  reduce using rule 2 (prog)
+
+
+State 27
+
+   10 instr: binary_alu_mnemonic optional_size cpu_register . comma cpu_register comma cpu_register
+
+    comma  shift, and go to state 33
+
+
+State 28
+
+   11 instr: unary_alu_mnemonic optional_size cpu_register . comma cpu_register
+
+    comma  shift, and go to state 34
+
+
+State 29
+
+   14 instr: ls_mnemonic number comma . cpu_register
+
+    cpu_register  shift, and go to state 35
+
+
+State 30
+
+   13 instr: ls_mnemonic memory_address comma . cpu_register
+
+    cpu_register  shift, and go to state 36
+
+
+State 31
+
+   12 instr: ls_mnemonic cpu_register comma . memory_address
+
+    memory_address  shift, and go to state 37
+
+
+State 32
+
+    7 data: data_size number $@3 data .
+
+    $default  reduce using rule 7 (data)
+
+
+State 33
+
+   10 instr: binary_alu_mnemonic optional_size cpu_register comma . cpu_register comma cpu_register
+
+    cpu_register  shift, and go to state 38
+
+
+State 34
+
+   11 instr: unary_alu_mnemonic optional_size cpu_register comma . cpu_register
+
+    cpu_register  shift, and go to state 39
+
+
+State 35
+
+   14 instr: ls_mnemonic number comma cpu_register .
+
+    $default  reduce using rule 14 (instr)
+
+
+State 36
+
+   13 instr: ls_mnemonic memory_address comma cpu_register .
+
+    $default  reduce using rule 13 (instr)
+
+
+State 37
+
+   12 instr: ls_mnemonic cpu_register comma memory_address .
+
+    $default  reduce using rule 12 (instr)
+
+
+State 38
+
+   10 instr: binary_alu_mnemonic optional_size cpu_register comma cpu_register . comma cpu_register
+
+    comma  shift, and go to state 40
+
+
+State 39
+
+   11 instr: unary_alu_mnemonic optional_size cpu_register comma cpu_register .
+
+    $default  reduce using rule 11 (instr)
+
+
+State 40
+
+   10 instr: binary_alu_mnemonic optional_size cpu_register comma cpu_register comma . cpu_register
+
+    cpu_register  shift, and go to state 41
+
+
+State 41
+
+   10 instr: binary_alu_mnemonic optional_size cpu_register comma cpu_register comma cpu_register .
+
+    $default  reduce using rule 10 (instr)

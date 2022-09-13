@@ -1,0 +1,12 @@
+.data
+    .w -2
+    .w 0
+.code
+    mov (0), r1
+    mov 1, r2
+    sal r1, r2, r3  # r3 = r1 >> r2, r3 should contain -1
+    mov r3, (2)
+
+# terminate program
+    mov 0, r1
+    int 0

@@ -1,0 +1,13 @@
+.data
+    .w 10
+    .w 20
+    .w 0
+.code
+    mov (0), r1
+    mov (2), r2
+    add r1, r2, r3
+    mov r3, (4)
+
+# terminate program
+    mov 0, r1
+    int 0

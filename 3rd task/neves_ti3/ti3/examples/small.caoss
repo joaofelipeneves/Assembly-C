@@ -1,0 +1,93 @@
+.data
+    .w 0
+    .w 1
+    .w 2
+    .w 3
+    .w 4
+    .w 5
+    .w 6
+    .w 7
+    .w 8
+    .w 9
+    .w 10
+    .w 11
+    .w 12
+    .w 13
+    .w 14
+    .w 15
+    .w 0
+    .w 1
+    .w 2
+    .w 3
+    .w 4
+    .w 5
+    .w 6
+    .w 7
+    .w 8
+    .w 9
+    .w 10
+    .w 11
+    .w 12
+    .w 13
+    .w 14
+    .w 15
+    .w 0
+    .w 1
+    .w 2
+    .w 3
+    .w 4
+    .w 5
+    .w 6
+    .w 7
+    .w 8
+    .w 9
+    .w 10
+    .w 11
+    .w 12
+    .w 13
+    .w 14
+    .w 15
+    .w 0
+    .w 1
+    .w 2
+    .w 3
+    .w 4
+    .w 5
+    .w 6
+    .w 7
+    .w 8
+    .w 9
+    .w 10
+    .w 11
+    .w 12
+    .w 13
+    .w 14
+    .w 15
+
+
+.code
+	mov (0), r7
+	mov (2), r5
+	mov (24), r1
+	mov (6), r2
+	mov (18), r4
+	mov r7, (40)
+	mov r5, (6)
+	mov r3, (32)
+	mov r4, (8)
+	mov r6, (10)
+	mov (100), r7
+	mov (102), r5
+	mov (124), r1
+	mov (206), r2
+	mov (218), r4
+	mov r7, (340)
+	mov r5, (226)
+	mov r3, (132)
+	mov r4, (124)
+	mov r6, (22)
+
+
+# terminate program
+    mov 0, r1
+    int 0

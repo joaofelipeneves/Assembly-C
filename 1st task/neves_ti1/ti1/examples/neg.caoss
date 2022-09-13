@@ -1,0 +1,11 @@
+.data
+    .w 10
+    .w 0
+.code
+    mov (0), r1
+    neg r1, r2
+    mov r2, (2)
+
+# terminate program
+    mov 0, r1
+    int 0

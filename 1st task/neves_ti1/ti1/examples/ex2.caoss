@@ -1,0 +1,12 @@
+.data
+
+.code
+    mov 20, r1
+    mov 24, r2
+    mov 32, r7
+    sub r1, r2, r3
+    add r3, r3, r7
+
+# terminate program
+    mov 0, r1
+    int 0
